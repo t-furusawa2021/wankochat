@@ -1,17 +1,17 @@
 <template>
-    <div>
+    <div class="chat">
         <div class="row">
             <table class="table m-auto offset-2 col-8">
                 <thead>
                     <tr>
-                        <th>送信日</th>
-                        <th>内容</th>
+                        <th class="text-white">送信日</th>
+                        <th class="text-white">内容</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="m in reverseMessages" v-bind:key="m.id">
-                        <th>{{m.created_at | dateFormat}}</th>
-                        <th v-text="m.body"></th>
+                        <th class="text-white">{{m.created_at | dateFormat}}</th>
+                        <th class="text-white" v-text="m.body"></th>
                     </tr>
                 </tbody>
             </table>
@@ -97,3 +97,9 @@ export default {
     },
   }
 </script>
+
+<style>
+    .table {
+        background-color: rgb(255, 208, 0, 0.5);
+    }
+</style>

@@ -10,6 +10,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 // コンポーネント群
 import ChatComponent from "./components/ChatComponent"
 import HeaderComponent from "./components/HeaderComponent"
+import LoginComponent from "./components/LoginComponent"
 
 window.Vue = Vue;
 window.moment = moment
@@ -26,6 +27,11 @@ const router =  new VueRouter({
             path: '/chat',
             name: 'chat',
             component: ChatComponent
+        },
+        {
+            path: '/',
+            name: 'login',
+            component: LoginComponent
         }
     ]
 });
