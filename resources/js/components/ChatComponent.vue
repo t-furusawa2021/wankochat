@@ -46,17 +46,30 @@ export default {
         send() {
             const url = 'api/chat';
             const params = { message: this.message };
-            axios.post(url, params)
+            axios.post(url, params, { withCredentials: true })
                 .then((response) => {
                     this.message = '';
+                }).catch(err => {
+                    // 作成時のエラー処理
+                    alert(err.response.data.errors.message);
                 });
         },
         // メッセージを取得する。
         getMessages() {
             const url = 'api/chat';
-            axios.get(url)
+            axios.get(url, { withCredentials: true })
                 .then((response) => {
+                    console.log(response.data)
                     this.messages = response.data;
+                }).catch(err => {
+                    // バリデーションエラー
+                    if (err.response.data.error) {
+                        alert(err.response.data.error);
+                    }
+                    // 文法エラー
+                    if (err.response.data.message) {
+                        alert(err.response.data.message)
+                    }
                 });
         },
         // laravelのchannelと接続する。
@@ -92,8 +105,10 @@ export default {
     computed: {
         // 取得したメッセージの順番を逆にして、チャット風にする。
         reverseMessages() {
-            return this.messages.slice().reverse();
-        },
+            if(this.messages.length > 0) {
+                return this.messages.slice().reverse();
+            }
+        }
     },
   }
 </script>

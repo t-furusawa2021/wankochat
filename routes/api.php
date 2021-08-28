@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MessageController as ApiMessageController;
+use App\Http\Controllers\Api\LoginController;
 
 
 /*
@@ -16,9 +17,9 @@ use App\Http\Controllers\Api\MessageController as ApiMessageController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/chat', [ApiMessageController::class, 'index']); // メッセージ一覧を取得
+    Route::post('/chat', [ApiMessageController::class, 'create']); // チャット登録
 });
-
-Route::get('/chat', [ApiMessageController::class, 'index']); // メッセージ一覧を取得
-Route::post('/chat', [ApiMessageController::class, 'create']); // チャット登録
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout']);

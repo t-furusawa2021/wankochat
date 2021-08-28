@@ -1,44 +1,62 @@
 <template>
   <div class="login">
-
     <h2 class="login-header">わんこチャット</h2>
-
-    <form class="login-container">
-      <p><input type="email" placeholder="Email" /></p>
-      <p><input type="password" placeholder="Password" /></p>
-      <!-- <p><input type="submit" value="Log in" /></p> -->
-      <p><router-link type="submit" :to="{ name: 'chat'}">ログインだわん</router-link></p>
-    </form>
+    <p><input v-model="email" type="email" placeholder="Email" /></p>
+    <span v-if="errors.email">
+    {{ errors.email[0] }}
+    </span>
+    <p><input v-model="password" type="password" placeholder="Password" /></p>
+    <span v-if="errors.password">
+    {{ errors.password[0] }}
+    </span>
+    <p><button type="button" @click="login()">ログインだわん</button></p>
   </div>
 </template>
 
-<style scoped>
-/**
- * 01/28/2016
- * This pen is years old, and watching at the code after all
- * those years made me fall from my chair, so I:
- * - changed all IDs to classes
- * - converted all units to pixels and em units
- * - changed all global elements to classes or children of
- *   .login
- * - cleaned the syntax to be more consistent
- * - added a lot of spaces that I so hard tried to avoid
- *   a few years ago
- *   (because it's cool to not use them)
- * - and probably something else that I can't remember anymore
- *
- * I sticked to the same philosophy, meaning:
- * - the design is almost the same
- * - only pure HTML and CSS
- * - no frameworks, preprocessors or resets
- */
 
-/* 'Open Sans' font from Google Fonts */
+<script>
+export default {
+  data() {
+    return {
+      email: "",
+      password: "",
+      errors: [],
+    };
+  },
+  methods: {
+    login() {
+      axios
+        .get("/sanctum/csrf-cookie",  { withCredentials: true })
+        .then((response) => {
+            console.log('test');
+            axios
+            .post("api/login", {
+                email: this.email,
+                password: this.password,
+            })
+            .then((response) => {
+                console.log(response);
+                localStorage.setItem("auth", "true");
+                this.$router.push('chat');
+            })
+            .catch((error) => {
+                this.errors = error.response.data.errors;
+            });
+        })
+        .catch((error) => {
+          alert(error.response.data.errors);
+        });
+    },
+  },
+};
+</script>
+
+<style scoped>
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
 
 body {
   background: #456;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 .login {

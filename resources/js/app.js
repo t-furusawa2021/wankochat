@@ -26,14 +26,38 @@ const router =  new VueRouter({
         {
             path: '/chat',
             name: 'chat',
-            component: ChatComponent
+            component: ChatComponent,
+            meta: { authOnly: true }
         },
         {
-            path: '/',
+            path: '/login',
             name: 'login',
-            component: LoginComponent
+            component: LoginComponent,
+            meta: { guestOnly: true }
         }
     ]
+});
+
+function isLoggedIn() {
+    return localStorage.getItem("auth");
+}
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.authOnly)) {
+        if (!isLoggedIn()) {
+            next("/login");
+        } else {
+            next();
+        }
+    } else if (to.matched.some(record => record.meta.guestOnly)) {
+        if (isLoggedIn()) {
+            next("/chat");
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
 });
 
 const app = new Vue({
