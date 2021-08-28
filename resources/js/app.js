@@ -11,6 +11,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import ChatComponent from "./components/ChatComponent"
 import HeaderComponent from "./components/HeaderComponent"
 import LoginComponent from "./components/LoginComponent"
+import HomeComponent from "./components/HomeComponent"
 
 window.Vue = Vue;
 window.moment = moment
@@ -23,6 +24,11 @@ const router =  new VueRouter({
     // モードの設定
     mode: 'history',
     routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: HomeComponent,
+        },
         {
             path: '/chat',
             name: 'chat',
