@@ -74,7 +74,7 @@ export default {
         },
         // laravelのchannelと接続する。
         connectChannel() {
-            Echo.channel('wankochat_database_chat')
+            Echo.channel('chat')
                 .listen('MessageReceived', (e) => {
                     this.getMessages();
             });
