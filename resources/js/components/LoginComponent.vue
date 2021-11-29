@@ -22,6 +22,7 @@
 
 
 <script>
+import { ErrorHandler } from "../helper/ErrorHandler";
 export default {
   data() {
     return {
@@ -35,14 +36,12 @@ export default {
       axios
         .get("/sanctum/csrf-cookie",  { withCredentials: true })
         .then((response) => {
-            console.log('test');
             axios
             .post("api/login", {
                 email: this.email,
                 password: this.password,
             })
             .then((response) => {
-                console.log(response);
                 localStorage.setItem("auth", "true");
                 this.$router.push('chat');
             })
@@ -51,7 +50,7 @@ export default {
             });
         })
         .catch((error) => {
-          alert(error.response.data.errors);
+            ErrorHandler(error);
         });
     },
   },

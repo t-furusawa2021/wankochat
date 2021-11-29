@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import { ErrorHandler } from "../helper/ErrorHandler";
 export default {
     data() {
         return {
@@ -59,17 +60,9 @@ export default {
             const url = 'api/chat';
             axios.get(url, { withCredentials: true })
                 .then((response) => {
-                    console.log(response.data)
                     this.messages = response.data;
                 }).catch(err => {
-                    // バリデーションエラー
-                    if (err.response.data.error) {
-                        alert(err.response.data.error);
-                    }
-                    // 文法エラー
-                    if (err.response.data.message) {
-                        alert(err.response.data.message)
-                    }
+                    ErrorHandler(err)
                 });
         },
         // laravelのchannelと接続する。
